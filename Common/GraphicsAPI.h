@@ -1,4 +1,4 @@
-// Copyright 2023, The Khronos Group Inc.
+// Copyright (c) 2018-2025 The Khronos Group Inc.
 //
 // SPDX-License-Identifier: Apache-2.0
 
@@ -9,8 +9,13 @@
 
 // Platform headers
 #if defined(_WIN32)
-#define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif  // !NOMINMAX
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif  // !WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <unknwn.h>
 #define XR_USE_PLATFORM_WIN32
@@ -31,15 +36,12 @@
 
 #if defined(__linux__) && !defined(__ANDROID__)
 #if defined(XR_TUTORIAL_USE_LINUX_XLIB)
-#include <X11/Xlib.h>
 #define XR_USE_PLATFORM_XLIB
 #endif
 #if defined(XR_TUTORIAL_USE_LINUX_XCB)
-#include <xcb/xcb.h>
 #define XR_USE_PLATFORM_XCB
 #endif
 #if defined(XR_TUTORIAL_USE_LINUX_WAYLAND)
-#include <wayland-client.h>
 #define XR_USE_PLATFORM_WAYLAND
 #endif
 
@@ -74,22 +76,65 @@
 #include <dxgi1_6.h>
 #endif
 
-#if defined(XR_USE_GRAPHICS_API_OPENGL)
-#if defined(XR_USE_PLATFORM_XLIB)
-#define OS_LINUX_XLIB 1
-#endif
-#if defined(XR_USE_PLATFORM_XCB)
-#define OS_LINUX_XCB 1
-#endif
-#if defined(XR_USE_PLATFORM_WAYLAND)
-#define OS_LINUX_WAYLAND 1
-#endif
+#ifdef XR_USE_PLATFORM_XLIB
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#endif  // XR_USE_PLATFORM_XLIB
 
-// gfxwrapper will redefine these macros
-#undef XR_USE_PLATFORM_WIN32
-#undef XR_USE_PLATFORM_XLIB
-#undef XR_USE_PLATFORM_XCB
-#undef XR_USE_PLATFORM_WAYLAND
+#ifdef XR_USE_PLATFORM_XCB
+#include <xcb/xcb.h>
+#endif  // XR_USE_PLATFORM_XCB
+
+#if defined(XR_USE_GRAPHICS_API_OPENGL_ES) || defined(XR_USE_PLATFORM_EGL) || defined(XR_USE_PLATFORM_ANDROID)
+#ifdef XRDEPENDENCIES_USE_GLAD
+#include <glad/egl.h>
+#else
+#include <EGL/egl.h>
+#endif
+#endif  // XR_USE_GRAPHICS_API_OPENGL_ES || XR_USE_PLATFORM_EGL || XR_USE_PLATFORM_ANDROID
+
+#if defined(XR_USE_GRAPHICS_API_OPENGL) && (defined(XR_USE_PLATFORM_XLIB) || defined(XR_USE_PLATFORM_XCB))
+#ifdef XRDEPENDENCIES_USE_GLAD
+#include <glad/glx.h>
+#else
+#include <GL/glx.h>
+#endif
+#endif  // XR_USE_GRAPHICS_API_OPENGL && XR_USE_PLATFORM_XLIB || XR_USE_PLATFORM_XCB
+
+#if defined(XR_USE_GRAPHICS_API_OPENGL) && defined(XR_USE_PLATFORM_XCB)
+#include <xcb/glx.h>
+#endif  // XR_USE_GRAPHICS_API_OPENGL && XR_USE_PLATFORM_XCB
+
+#if defined(XR_USE_GRAPHICS_API_OPENGL) && defined(XR_USE_PLATFORM_MACOS) && !defined(XRDEPENDENCIES_USE_GLAD)
+#include <OpenCL/cl_gl_ext.h>
+#endif  // XR_USE_GRAPHICS_API_OPENGL && XR_USE_PLATFORM_MACOS && !XRDEPENDENCIES_USE_GLAD
+
+#ifdef XR_USE_GRAPHICS_API_VULKAN
+#include <vulkan/vulkan.h>
+#endif  // XR_USE_GRAPHICS_API_VULKAN
+
+#ifdef XR_USE_PLATFORM_WAYLAND
+#include <wayland-client.h>
+#endif  // XR_USE_PLATFORM_WAYLAND
+
+#if defined(XR_USE_PLATFORM_XLIB) || defined(XR_USE_PLATFORM_XCB)
+#ifdef Success
+#undef Success
+#endif  // Success
+
+#ifdef Always
+#undef Always
+#endif  // Always
+
+#ifdef None
+#undef None
+#endif  // None
+#endif  // defined(XR_USE_PLATFORM_XLIB) || defined(XR_USE_PLATFORM_XCB)
+
+#ifdef XR_USE_TIMESPEC
+#include <time.h>
+#endif  // XR_USE_TIMESPEC
+#if defined(XR_USE_GRAPHICS_API_OPENGL) || defined(XR_USE_GRAPHICS_API_OPENGL_ES)
 #include <gfxwrapper_opengl.h>
 #endif
 

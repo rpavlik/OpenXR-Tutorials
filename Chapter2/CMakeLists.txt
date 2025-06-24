@@ -93,7 +93,6 @@ if(ANDROID) # Android
             ../Common/
             # From OpenXR repo
             "${openxr_SOURCE_DIR}/src/common"
-            "${openxr_SOURCE_DIR}/external/include"
     )
 
     # export ANativeActivity_onCreate for java to call.
@@ -128,7 +127,7 @@ if(ANDROID) # Android
     # XR_DOCS_TAG_END_VulkanNDK
 
     # XR_DOCS_TAG_BEGIN_Gfxwrapper
-    include(../thirdparty/glwrapper/CMakeLists.txt)
+    add_subdirectory(../thirdparty/glwrapper glwrapper)
     if(TARGET tutorial_glwrapper)
         target_link_libraries(${PROJECT_NAME} tutorial_glwrapper)
         target_compile_definitions(
@@ -153,9 +152,6 @@ else() # Windows / Linux
         PRIVATE
             # In this repo
             ../Common/
-            # From OpenXR repo
-            "${openxr_SOURCE_DIR}/src/common"
-            "${openxr_SOURCE_DIR}/external/include"
     )
     target_link_libraries(${PROJECT_NAME} openxr_loader)
     # XR_DOCS_TAG_END_WindowsLinux
@@ -200,7 +196,7 @@ else() # Windows / Linux
 
     # XR_DOCS_TAG_BEGIN_OpenGL
     # OpenGL
-    include(../thirdparty/glwrapper/CMakeLists.txt)
+    add_subdirectory(../thirdparty/glwrapper glwrapper)
     if(TARGET tutorial_glwrapper)
         target_link_libraries(${PROJECT_NAME} tutorial_glwrapper)
         target_compile_definitions(

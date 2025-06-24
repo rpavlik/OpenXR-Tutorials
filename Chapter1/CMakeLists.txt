@@ -124,7 +124,7 @@ if(ANDROID) # Android
     # XR_DOCS_TAG_END_VulkanNDK
 
     # XR_DOCS_TAG_BEGIN_Gfxwrapper
-    include(../thirdparty/glwrapper/CMakeLists.txt)
+    add_subdirectory(../thirdparty/glwrapper glwrapper)
     if(TARGET tutorial_glwrapper)
         target_link_libraries(${PROJECT_NAME} tutorial_glwrapper)
         target_compile_definitions(
@@ -193,7 +193,7 @@ else() # Windows / Linux
 
     # XR_DOCS_TAG_BEGIN_OpenGL
     # OpenGL
-    include(../thirdparty/glwrapper/CMakeLists.txt)
+    add_subdirectory(../thirdparty/glwrapper glwrapper)
     if(TARGET tutorial_glwrapper)
         target_link_libraries(${PROJECT_NAME} tutorial_glwrapper)
         target_compile_definitions(

@@ -115,7 +115,6 @@ if(ANDROID) # Android
             ../Common/
             # From OpenXR repo
             "${openxr_SOURCE_DIR}/src/common"
-            "${openxr_SOURCE_DIR}/external/include"
     )
 
     # export ANativeActivity_onCreate for java to call.
@@ -235,7 +234,6 @@ else() # Windows / Linux
             ../Common/
             # From OpenXR repo
             "${openxr_SOURCE_DIR}/src/common"
-            "${openxr_SOURCE_DIR}/external/include"
     )
     target_link_libraries(${PROJECT_NAME} openxr_loader)
     # XR_DOCS_TAG_END_WindowsLinux

@@ -85,7 +85,7 @@ if(Vulkan_FOUND)
     target_compile_definitions(${PROJECT_NAME} PUBLIC XR_TUTORIAL_USE_VULKAN)
 endif()
 
-include(../thirdparty/glwrapper/CMakeLists.txt)
+add_subdirectory(../thirdparty/glwrapper glwrapper)
 target_link_libraries(${PROJECT_NAME} tutorial_glwrapper)
 target_compile_definitions(${PROJECT_NAME} PUBLIC XR_TUTORIAL_USE_OPENGL)
 

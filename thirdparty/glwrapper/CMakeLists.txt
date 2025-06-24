@@ -1,11 +1,8 @@
-# Copyright 2023, The Khronos Group Inc.
+# Copyright 2023-2025, The Khronos Group Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 
 # Built from OpenXR to provide OpenGL (ES) support
-
-include(${CMAKE_CURRENT_LIST_DIR}/glad2/CMakeLists.txt)
-
 
 if(NOT TARGET tutorial_glwrapper)
     if(ANDROID)
@@ -16,22 +13,22 @@ if(NOT TARGET tutorial_glwrapper)
     endif()
 
     if(OpenGL_FOUND OR OpenGLES_FOUND)
-        add_library(
-                tutorial_glwrapper STATIC
-                ${CMAKE_CURRENT_LIST_DIR}/gfxwrapper_opengl.c
+
+        add_subdirectory(glad2)
+        add_library(tutorial_glwrapper STATIC gfxwrapper_opengl.c)
+        target_include_directories(tutorial_glwrapper PUBLIC .)
+        target_link_libraries(tutorial_glwrapper PUBLIC openxr-glad-loader)
+        target_compile_definitions(
+            tutorial_glwrapper PUBLIC XRDEPENDENCIES_USE_GLAD
         )
-        target_include_directories(
-                tutorial_glwrapper PUBLIC
-                ${CMAKE_CURRENT_LIST_DIR}
-        )
-        if(ANDROID)
-            target_link_libraries(tutorial_glwrapper PUBLIC tutorial-glad-loader)
-            target_link_libraries(
-                    tutorial_glwrapper PUBLIC ${OpenGLES_V3_LIBRARY} EGL::EGL
-            )
-        else()
-            target_link_libraries(tutorial_glwrapper PUBLIC OpenGL::GL tutorial-glad-loader)
-        endif()
+        # if(ANDROID)
+        #     target_link_libraries(tutorial_glwrapper PUBLIC openxr-glad-loader)
+        #     target_link_libraries(
+        #         tutorial_glwrapper PUBLIC ${OpenGLES_V3_LIBRARY} EGL::EGL
+        #     )
+        # else()
+
+        # endif()
     endif()
 
     # Determine the presentation backend for Linux systems.

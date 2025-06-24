@@ -204,7 +204,9 @@ Platform headers / declarations
 #include <malloc.h>   // for memalign
 
 #if defined(OS_LINUX_XLIB)
+#ifndef XR_USE_PLATFORM_XLIB
 #define XR_USE_PLATFORM_XLIB 1
+#endif
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -225,7 +227,9 @@ Platform headers / declarations
 #endif  // None
 
 #elif defined(OS_LINUX_XCB) || defined(OS_LINUX_XCB_GLX)
+#ifndef XR_USE_PLATFORM_XCB
 #define XR_USE_PLATFORM_XCB 1
+#endif
 
 #include <X11/keysym.h>
 #include <xcb/xcb.h>
@@ -249,7 +253,9 @@ Platform headers / declarations
 #endif  // None
 
 #elif defined(OS_LINUX_WAYLAND)
+#ifndef XR_USE_PLATFORM_WAYLAND
 #define XR_USE_PLATFORM_WAYLAND 1
+#endif
 
 #include <wayland-client.h>
 #include <wayland-client-protocol.h>
