@@ -110,12 +110,13 @@ if(WIN32)
         get_source_file_property(shadermodel ${FILE} ShaderModel)
         add_custom_command(
             TARGET ${PROJECT_NAME}
+            PRE_BUILD
             COMMAND
                 fxc.exe /nologo /Emain /T${shadertype}_${shadermodel}
                 $<IF:$<CONFIG:DEBUG>,/Od,/O1> /Zi /Fo
                 ${CMAKE_CURRENT_BINARY_DIR}/${FILE_WE}_${shadermodel}.cso /Fd
                 ${CMAKE_CURRENT_BINARY_DIR}/${FILE_WE}_${shadermodel}.pdb
-                ${FILE} MAIN_DEPENDENCY ${FILE}
+                ${FILE} # DEPENDS ${FILE}
             COMMENT "HLSL ${FILE}"
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             VERBATIM
@@ -129,12 +130,13 @@ if(WIN32)
         get_source_file_property(shadermodel ${FILE} ShaderModel)
         add_custom_command(
             TARGET ${PROJECT_NAME}
+            PRE_BUILD
             COMMAND
                 fxc.exe /nologo /Emain /T${shadertype}_${shadermodel}
                 $<IF:$<CONFIG:DEBUG>,/Od,/O1> /Zi /Fo
                 ${CMAKE_CURRENT_BINARY_DIR}/${FILE_WE}_${shadermodel}.cso /Fd
                 ${CMAKE_CURRENT_BINARY_DIR}/${FILE_WE}_${shadermodel}.pdb
-                ${FILE} MAIN_DEPENDENCY ${FILE}
+                ${FILE} # MAIN_DEPENDENCY ${FILE}
             COMMENT "HLSL ${FILE}"
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             VERBATIM
@@ -157,11 +159,12 @@ if(Vulkan_FOUND)
         get_source_file_property(shadertype ${FILE} ShaderType)
         add_custom_command(
             TARGET ${PROJECT_NAME}
+            PRE_BUILD
             COMMAND
                 glslangValidator.exe -V ${FILE} -e main -S ${shadertype}
                 $<IF:$<CONFIG:DEBUG>,-Od,> -g -o
-                ${CMAKE_CURRENT_BINARY_DIR}/${FILE_WE}.spv MAIN_DEPENDENCY
-                ${FILE}
+                ${CMAKE_CURRENT_BINARY_DIR}/${FILE_WE}.spv
+                # MAIN_DEPENDENCY ${FILE}
             COMMENT "GLSL ${FILE}"
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             VERBATIM COMMAND_EXPAND_LISTS
@@ -174,9 +177,11 @@ foreach(FILE ${GLSL_SHADERS})
     get_filename_component(FILE_WE ${FILE} NAME_WE)
     add_custom_command(
         TARGET ${PROJECT_NAME}
+        PRE_BUILD
         COMMAND
             ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/${FILE}
-            ${CMAKE_CURRENT_BINARY_DIR}/${FILE_WE}.glsl MAIN_DEPENDENCY ${FILE}
+            ${CMAKE_CURRENT_BINARY_DIR}/${FILE_WE}.glsl
+            # MAIN_DEPENDENCY ${FILE}
         COMMENT "GLSL ${FILE}"
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         VERBATIM
