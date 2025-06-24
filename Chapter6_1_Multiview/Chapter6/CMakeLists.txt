@@ -29,8 +29,8 @@ set(BUILD_API_LAYERS
 FetchContent_Declare(
     OpenXR
     URL_HASH
-        SHA256=207452a51ec9d730742c385adb5af21fb266fa7be8090b251f76c0bd2b433c61
-    URL https://github.com/KhronosGroup/OpenXR-SDK-Source/releases/download/release-1.1.49/OpenXR-SDK-Source-release-1.1.49.tar.gz
+        SHA256=d887db6831d755fb44b8698f16fedd8e6a4af4b645dabf658fc454586000790b
+    URL https://github.com/KhronosGroup/OpenXR-SDK-Source/releases/download/release-1.1.48/OpenXR-SDK-Source-release-1.1.48.tar.gz
         SOURCE_DIR
         openxr
 )
