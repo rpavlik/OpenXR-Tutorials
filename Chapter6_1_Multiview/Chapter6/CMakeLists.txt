@@ -4,8 +4,7 @@
 
 # XR_DOCS_TAG_BEGIN_SetProjectName6
 cmake_minimum_required(VERSION 3.22.1)
-set(PROJECT_NAME OpenXRTutorialChapter6)
-project("${PROJECT_NAME}")
+project(OpenXRTutorialChapter6)
 # XR_DOCS_TAG_END_SetProjectName6
 
 # XR_DOCS_TAG_BEGIN_CMakeModulePath
