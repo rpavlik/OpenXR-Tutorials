@@ -9,7 +9,7 @@ include(FetchContent)
 
 # openxr_loader - From github.com/KhronosGroup
 set(BUILD_ALL_EXTENSIONS
-    ON
+    OFF
     CACHE INTERNAL "Build loader and layers with all extensions"
 )
 set(BUILD_TESTS
@@ -21,7 +21,7 @@ set(BUILD_CONFORMANCE_TESTS
     CACHE INTERNAL "Build conformance tests"
 )
 set(BUILD_API_LAYERS
-    ON
+    OFF
     CACHE INTERNAL "Use OpenXR layers"
 )
 FetchContent_Declare(
@@ -85,11 +85,8 @@ if(Vulkan_FOUND)
     target_compile_definitions(${PROJECT_NAME} PUBLIC XR_TUTORIAL_USE_VULKAN)
 endif()
 
-# Fix redirection to a different project's build folder
-target_include_directories(
-    ${PROJECT_NAME} PUBLIC ${openxr_SOURCE_DIR}/src/common
-)
-target_link_libraries(${PROJECT_NAME} tutorial-gfxwrapper)
+include(../thirdparty/glwrapper/CMakeLists.txt)
+target_link_libraries(${PROJECT_NAME} tutorial_glwrapper)
 target_compile_definitions(${PROJECT_NAME} PUBLIC XR_TUTORIAL_USE_OPENGL)
 
 #Shaders
