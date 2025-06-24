@@ -1,4 +1,4 @@
-# Copyright 2023, The Khronos Group Inc.
+# Copyright 2023-2025, The Khronos Group Inc.
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -29,8 +29,8 @@ set(BUILD_API_LAYERS
 )
 FetchContent_Declare(
     OpenXR
-    URL_HASH MD5=924a94a2da0b5ef8e82154c623d88644
-    URL https://github.com/KhronosGroup/OpenXR-SDK-Source/archive/refs/tags/release-1.0.34.zip
+    URL_HASH SHA256=2350fe67db3fbe92290018c949d41a6340f50943a3f87121af4546aec0eaf4b5
+    URL https://github.com/KhronosGroup/OpenXR-SDK-Source/releases/download/release-1.1.47/OpenXR-SDK-Source-release-1.1.47.tar.gz
         SOURCE_DIR
         openxr
 )
