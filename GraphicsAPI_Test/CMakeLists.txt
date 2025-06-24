@@ -89,7 +89,7 @@ endif()
 target_include_directories(
     ${PROJECT_NAME} PUBLIC ${openxr_SOURCE_DIR}/src/common
 )
-target_link_libraries(${PROJECT_NAME} openxr-gfxwrapper)
+target_link_libraries(${PROJECT_NAME} tutorial-gfxwrapper)
 target_compile_definitions(${PROJECT_NAME} PUBLIC XR_TUTORIAL_USE_OPENGL)
 
 #Shaders

@@ -30,6 +30,11 @@ set(BUILD_API_LAYERS
     ON
     CACHE INTERNAL "Use OpenXR layers"
 )
+set(BUILD_CONFORMANCE_TESTS
+    OFF
+    CACHE INTERNAL "Build tests"
+)
+
 FetchContent_Declare(
     OpenXR
     URL_HASH
@@ -38,8 +43,21 @@ FetchContent_Declare(
         SOURCE_DIR
         openxr
 )
+
 FetchContent_MakeAvailable(OpenXR)
 # XR_DOCS_TAG_END_FetchContent
+
+# Temporary workaround for compile warning in OpenXR's gfxwrapper.
+if (TARGET openxr-gfxwrapper)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(openxr-gfxwrapper PRIVATE "--warn-no-unused-parameter")
+endif()
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(openxr-gfxwrapper PRIVATE "--warn-no-unused-parameter")
+endif()
+endif()
+
 
 # Files
 set(SOURCES
@@ -122,12 +140,9 @@ if(ANDROID) # Android
     # XR_DOCS_TAG_END_VulkanNDK
 
     # XR_DOCS_TAG_BEGIN_Gfxwrapper
-    include(../cmake/gfxwrapper.cmake)
-    if(TARGET openxr-gfxwrapper)
-        target_include_directories(
-            ${PROJECT_NAME} PUBLIC ${openxr_SOURCE_DIR}/src/common
-        )
-        target_link_libraries(${PROJECT_NAME} openxr-gfxwrapper)
+    include(../thirdparty/glwrapper/CMakeLists.txt)
+    if(TARGET tutorial_glwrapper)
+        target_link_libraries(${PROJECT_NAME} tutorial_glwrapper)
         target_compile_definitions(
             ${PROJECT_NAME} PUBLIC XR_TUTORIAL_USE_OPENGL_ES
         )
@@ -249,9 +264,9 @@ else() # Windows / Linux
 
     # XR_DOCS_TAG_BEGIN_OpenGL
     # OpenGL
-    include(../cmake/gfxwrapper.cmake)
-    if(TARGET openxr-gfxwrapper)
-        target_link_libraries(${PROJECT_NAME} openxr-gfxwrapper)
+    include(../thirdparty/glwrapper/CMakeLists.txt)
+    if(TARGET tutorial_glwrapper)
+        target_link_libraries(${PROJECT_NAME} tutorial_glwrapper)
         target_compile_definitions(
             ${PROJECT_NAME} PUBLIC XR_TUTORIAL_USE_OPENGL
         )
