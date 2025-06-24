@@ -15,6 +15,10 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
 include("../cmake/graphics_api_select.cmake")
 
 # XR_DOCS_TAG_BEGIN_FetchContent
+if(POLICY CMP0135)
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
 # For FetchContent_Declare() and FetchContent_MakeAvailable()
 include(FetchContent)
 

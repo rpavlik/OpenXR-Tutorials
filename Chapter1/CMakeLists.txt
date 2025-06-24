@@ -16,6 +16,10 @@ include("../cmake/graphics_api_select.cmake")
 
 # XR_DOCS_TAG_BEGIN_FetchContent
 # For FetchContent_Declare() and FetchContent_MakeAvailable()
+if(POLICY CMP0135)
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
 include(FetchContent)
 
 # openxr_loader - From github.com/KhronosGroup
